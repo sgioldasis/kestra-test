@@ -1,0 +1,25 @@
+# Ignore the xxx folder
+xxx/
+
+# Ignore all .env files
+.env
+.env_encoded
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignore build and dependency directories
+node_modules/
+target/
+build/
+dist/
+
+# Ignore log files
+*.log
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
