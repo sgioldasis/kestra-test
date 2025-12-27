@@ -58,3 +58,13 @@ triggers:
   - id: daily_06_utc
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 6 * * *"
+  - id: after_ingestion_success
+    type: io.kestra.plugin.core.trigger.Flow
+    inputs:
+      dbt_command: "dbt build"
+    conditions:
+      - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
+        in:
+          - SUCCESS
+    namespace: ingestion.team
+    flowId: databricks_job_wait
