@@ -17,6 +17,9 @@ target/
 build/
 dist/
 
+# Ignore dbt test directory
+dbt-test/
+
 # Ignore log files
 *.log
 

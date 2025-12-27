@@ -17,7 +17,7 @@ pluginDefaults:
 tasks:
   - id: log_token
     type: io.kestra.plugin.core.log.Log
-    message: "Databricks Token: {{ secret('DATABRICKS_TOKEN') | abbreviate(8) }}..."
+    message: "Databricks Token: {{ secret('DATABRICKS_TOKEN') | abbreviate(7) }}"
 
   - id: submit_run_and_wait
     type: io.kestra.plugin.databricks.job.SubmitRun
