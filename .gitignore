@@ -5,6 +5,12 @@ xxx/
 .env
 .env_encoded
 
+# Ignore Kestra generated files
+application-k8s.yaml
+gen_values.rb
+kestra-starter-values.yaml
+kestra-values.yaml
+
 # Ignore IDE specific files
 .idea/
 .vscode/
