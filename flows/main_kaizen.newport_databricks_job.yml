@@ -1,16 +1,23 @@
-id: databricks_job_wait
-namespace: ingestion.team
+namespace: kaizen.newport
+id: databricks_job
+
+labels:
+  layer: Ingestion
+  owner: Savas
 
 inputs:
   - id: job_id
     type: STRING
     required: true
-    defaults: "987366449263258" # ← your job id
+    defaults: "987366449263258"
+  - id: operator
+    type: STRING
+    required: true
 
 pluginDefaults:
   - type: io.kestra.plugin.databricks.job.*
     values:
-      host: https://dbc-a8f6bc8e-f728.cloud.databricks.com # Ensure this is your actual Databricks host
+      host: https://dbc-a8f6bc8e-f728.cloud.databricks.com
       authentication:
         token: "{{ secret('DATABRICKS_TOKEN') }}"
 
@@ -21,10 +28,7 @@ tasks:
 
   - id: submit_run_and_wait
     type: io.kestra.plugin.databricks.job.SubmitRun
-    # Explicitly define host and authentication here as well, for robustness
-    # If pluginDefaults are correctly applied, these will effectively be redundant
-    # but help diagnose the current error.
-    host: https://dbc-a8f6bc8e-f728.cloud.databricks.com # Replace with your actual Databricks host
+    host: https://dbc-a8f6bc8e-f728.cloud.databricks.com
     authentication:
       token: "{{ secret('DATABRICKS_TOKEN') }}"
     runName: "My Kestra Triggered Job Run"
@@ -33,6 +37,9 @@ tasks:
       - taskKey: trigger-existing-job
         runJobTask:
           jobId: "{{ inputs.job_id }}"
+          jobParameters:
+            current_date: "{{ now() }}"
+            operator: "{{ inputs.operator }}"
 
   - id: done
     type: io.kestra.plugin.core.log.Log

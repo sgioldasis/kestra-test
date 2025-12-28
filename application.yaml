@@ -30,3 +30,9 @@ kestra:
      tmpDir:
        path: "/tmp/kestra-wd/tmp"
    url: "http://localhost:8080/"
+   ai:
+     type: gemini
+     gemini:
+       model-name: gemini-3-flash-preview
+       api-key: ${GOOGLEAI_API_KEY}
+   

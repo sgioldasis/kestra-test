@@ -1,5 +1,9 @@
-id: dbt_test_from_github
-namespace: demo.dbt
+namespace: kaizen.manchester
+id: dbt_test_job
+
+labels:
+  layer: Transformation
+  owner: Argyro
 
 inputs:
   - id: dbt_command
@@ -66,5 +70,5 @@ triggers:
       - type: io.kestra.plugin.core.condition.ExecutionStatusCondition
         in:
           - SUCCESS
-    namespace: ingestion.team
-    flowId: databricks_job_wait
+    namespace: kaizen.newport
+    flowId: databricks_job
