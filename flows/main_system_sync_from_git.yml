@@ -1,0 +1,18 @@
+id: sync_from_git
+namespace: system
+
+tasks:
+  - id: git
+    type: io.kestra.plugin.git.SyncFlows
+    url: https://github.com/sgioldasis/kestra-flows.git
+    branch: main
+    username: sgioldasis
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    targetNamespace: kaizen
+    includeChildNamespaces: true # optional; by default, it's set to false to allow explicit definition
+    gitDirectory: _flows
+
+# triggers:
+#   - id: schedule
+#     type: io.kestra.plugin.core.trigger.Schedule
+#     cron: "*/1 * * * *" # every minute

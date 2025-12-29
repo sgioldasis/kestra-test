@@ -1,0 +1,20 @@
+id: push_to_git
+namespace: system
+
+tasks:
+  - id: commit_and_push
+    type: io.kestra.plugin.git.PushFlows
+    url: https://github.com/sgioldasis/kestra-flows.git
+    sourceNamespace: kaizen
+    targetNamespace: kaizen
+    includeChildNamespaces: true
+    flows: "*"
+    branch: main
+    username: sgioldasis
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    commitMessage: add namespace files changes
+
+# triggers:
+#   - id: schedule
+#     type: io.kestra.plugin.core.trigger.Schedule
+#     cron: "* */1 * * *" # every hour
