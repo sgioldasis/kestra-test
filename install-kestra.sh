@@ -48,9 +48,16 @@ begin
   values = {
     "kestra" => {
       "configurations" => { "application" => {} },
-      "common" => { 
+      "common" => {
         "extraEnv" => [{ "name" => "DOCKER_HOST", "value" => "unix:///dind/docker.sock" }],
-        "extraVolumes" => [], "extraVolumeMounts" => [], "initContainers" => []
+        "extraVolumes" => [], "extraVolumeMounts" => [], "initContainers" => [],
+        "securityContext" => {
+          "runAsNonRoot" => false,
+          "runAsUser" => 0,
+          "capabilities" => {
+            "add" => ["NET_BIND_SERVICE"]
+          }
+        }
       },
       "startupProbe" => { "failureThreshold" => 300 },
       "livenessProbe" => { "failureThreshold" => 10 }
@@ -63,8 +70,10 @@ begin
     if app_config["kestra"]
       app_config["kestra"].delete("repository"); app_config["kestra"].delete("storage"); app_config["kestra"].delete("queue")
       app_config["kestra"]["tutorialFlows"] ||= {}; app_config["kestra"]["tutorialFlows"]["enabled"] = false
-      app_config["kestra"]["tasks"] ||= {}; app_config["kestra"]["tasks"]["tmpDir"] ||= {}
+      app_config["kestra"]["tasks"]["tmpDir"] ||= {}
       app_config["kestra"]["tasks"]["tmpDir"]["path"] = "/tmp/kestra-wd/tmp"
+      app_config["kestra"]["tasks"]["tmpDir"]["createIfNotExists"] = true
+      app_config["kestra"]["tasks"]["tmpDir"]["permissions"] = "777"
     end
     
     app_config["kestra"]["plugins"] ||= {}
