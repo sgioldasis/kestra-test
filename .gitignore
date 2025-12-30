@@ -32,3 +32,6 @@ dbt-test/
 # Ignore OS generated files
 .DS_Store
 Thumbs.db
+
+# Ignore Roo generated files
+.roo/
