@@ -11,7 +11,7 @@ tasks:
     targetNamespace: kaizen
     includeChildNamespaces: true # optional; by default, it's set to false to allow explicit definition
     gitDirectory: _flows
-
+    
 # triggers:
 #   - id: schedule
 #     type: io.kestra.plugin.core.trigger.Schedule

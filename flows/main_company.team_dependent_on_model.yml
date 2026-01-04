@@ -1,0 +1,20 @@
+id: dependent_on_model
+namespace: company.team
+
+tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    message: "Model {{ trigger.labels.model }} is ready! 🚀"
+
+triggers:
+  - id: bi_job_trigger
+    type: io.kestra.plugin.core.trigger.Flow
+    preconditions:
+      id: bi_job_precondition
+      flows:
+        - namespace: kaizen.bi
+          flowId: bi_job
+          states:
+            - SUCCESS
+          labels:  # This matches execution labels, not flow labels
+            model: model.dbt_optimove.stg_kaizen_wars__fact_virtual            

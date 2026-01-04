@@ -1,0 +1,11 @@
+id: bi_job
+namespace: kaizen.bi
+
+tasks:
+  - id: trigger_run
+    type: io.kestra.plugin.dbt.cloud.TriggerRun
+    baseUrl: "https://tw590.eu1.dbt.com"  # If using EMEA region
+    accountId: "413"
+    token: "{{ secret('DBT_CLOUD_TOKEN') }}"
+    jobId: "493899"    
+

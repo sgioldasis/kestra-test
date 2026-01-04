@@ -1,0 +1,51 @@
+namespace: kaizen.manchester
+id: dbt_test_job
+labels:
+  layer: Transformation
+  owner: Argyro
+inputs:
+  - id: dbt_command
+    type: STRING
+    defaults: dbt build
+tasks:
+  - id: wdir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/sgioldasis/dbt-test.git
+        branch: main
+        directory: dbt_project
+      - id: dbt
+        type: io.kestra.plugin.dbt.cli.DbtCLI
+        projectDir: dbt_project
+        profiles: |
+          default:
+            target: dev
+            outputs:
+              dev:
+                type: databricks
+                host: dbc-a8f6bc8e-f728.cloud.databricks.com
+                http_path: /sql/1.0/warehouses/333120755706219a
+                token: "{{ secret('DATABRICKS_TOKEN') }}"
+                catalog: test
+                schema: ice
+                threads: 4
+        containerImage: ghcr.io/kestra-io/dbt-databricks:latest
+        commands:
+          - dbt deps
+          - "{{ inputs.dbt_command }}"
+        namespaceFiles:
+          enabled: false
+triggers:
+  - id: after_ingestion_success
+    type: io.kestra.plugin.core.trigger.Flow
+    inputs:
+      dbt_command: dbt build
+    preconditions:
+      id: upstream_flow
+      flows:
+        - namespace: kaizen.newport
+          flowId: databricks_job
+          states:
+            - SUCCESS
